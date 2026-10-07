@@ -12,7 +12,7 @@ node_modules/
 *.env
 
 # Production build outputs
-dist/
+# dist/ (client/dist is tracked for single-service Render deployment)
 build/
 .next/
 out/

@@ -34,19 +34,40 @@ app.use((req, res, next) => {
 });
 
 // Locate client build directory across various deployment environments
-const clientDistCandidates = [
-  path.resolve(__dirname, '../../client/dist'),
-  path.resolve(__dirname, '../client/dist'),
-  path.resolve(process.cwd(), 'client/dist'),
-  path.resolve(process.cwd(), '../client/dist'),
-  path.resolve(process.cwd(), 'dist')
-];
+function findClientDist() {
+  const candidates = [
+    path.resolve(__dirname, '../../client/dist'),
+    path.resolve(__dirname, '../client/dist'),
+    path.resolve(process.cwd(), 'client/dist'),
+    path.resolve(process.cwd(), '../client/dist'),
+    path.resolve(process.cwd(), 'dist'),
+    '/opt/render/project/src/client/dist'
+  ];
+  for (const c of candidates) {
+    try {
+      if (fs.existsSync(path.join(c, 'index.html'))) {
+        return c;
+      }
+    } catch {}
+  }
+  return null;
+}
 
-const clientDistPath = clientDistCandidates.find(p => fs.existsSync(p));
+const clientDistPath = findClientDist();
 if (clientDistPath) {
   console.log(`📦 Serving static client build from: ${clientDistPath}`);
   app.use(express.static(clientDistPath));
+} else {
+  console.warn(`⚠️ Warning: client/dist not found. Checked multiple paths.`);
 }
+
+// Explicit Root Route - serves UI index.html if available
+app.get('/', (req, res, next) => {
+  if (clientDistPath && fs.existsSync(path.join(clientDistPath, 'index.html'))) {
+    return res.sendFile(path.join(clientDistPath, 'index.html'));
+  }
+  next();
+});
 
 // Healthcheck Route
 app.get('/api/health', async (req, res) => {
