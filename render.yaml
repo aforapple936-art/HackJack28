@@ -1,18 +1,15 @@
 services:
   - type: web
-    name: choosy-backend
+    name: choosy-platform
     runtime: node
     plan: free
     region: oregon
-    rootDir: server
-    buildCommand: npm install
+    buildCommand: npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_ANON_KEY

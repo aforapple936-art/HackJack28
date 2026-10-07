@@ -5,8 +5,8 @@
   "main": "server/src/index.js",
   "scripts": {
     "start": "node server/src/index.js",
-    "build": "npm --prefix server install",
-    "postinstall": "npm --prefix server install",
+    "build": "npm --prefix client install && npm --prefix client run build && npm --prefix server install",
+    "postinstall": "npm --prefix client install && npm --prefix client run build && npm --prefix server install",
     "migrate": "node scripts/migrate.js",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",

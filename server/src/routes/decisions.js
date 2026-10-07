@@ -240,12 +240,14 @@ router.post('/:id/share', async (req, res) => {
     if (!decision) return res.status(404).json({ success: false, error: 'Decision not found' });
 
     const shareToken = `share-${req.params.id.slice(0, 8)}-${Date.now()}`;
+    const origin = req.get('origin') || req.get('referer') || `${req.protocol}://${req.get('host')}`;
+    const cleanOrigin = origin.replace(/\/$/, '');
     res.json({
       success: true,
       data: {
         decisionId: req.params.id,
         shareToken,
-        shareUrl: `http://localhost:5173/?shared=${shareToken}&decision=${req.params.id}`
+        shareUrl: `${cleanOrigin}/?shared=${shareToken}&decision=${req.params.id}`
       }
     });
   } catch (err) {
