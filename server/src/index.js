@@ -24,6 +24,19 @@ app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
+// Root discovery route
+app.get('/', (req, res) => {
+  res.json({
+    status: 'healthy',
+    platform: 'Choosy Decision Intelligence Platform API',
+    version: '2.0.0',
+    endpoints: {
+      health: '/api/health',
+      decisions: '/api/decisions',
+      ai: '/api/ai'
+    }
+  });
+});
 
 // Healthcheck Route
 app.get('/api/health', async (req, res) => {
