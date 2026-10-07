@@ -1,0 +1,29 @@
+{
+  "name": "choosy-platform",
+  "version": "1.0.0",
+  "description": "Choosy — Full-Stack AI Decision Intelligence + Real-World Data + Personalization Platform",
+  "main": "server/src/index.js",
+  "scripts": {
+    "migrate": "node scripts/migrate.js",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev:server\" \"npm run dev:client\"",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "keywords": [
+    "decision-intelligence",
+    "ai",
+    "mcda",
+    "gemini",
+    "supabase",
+    "what-if-simulation",
+    "real-world-data"
+  ],
+  "author": "Antigravity Team",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
