@@ -2,10 +2,18 @@ const { createClient } = require('@supabase/supabase-js');
 const config = require('../config');
 const seedData = require('./seedData');
 
-// Initialize Supabase Client with Service Role Key
-const supabase = createClient(config.supabase.url, config.supabase.serviceRoleKey, {
-  auth: { persistSession: false }
-});
+// Initialize Supabase Client safely
+let supabase = null;
+try {
+  if (config.supabase.url && config.supabase.serviceRoleKey) {
+    supabase = createClient(config.supabase.url, config.supabase.serviceRoleKey, {
+      auth: { persistSession: false }
+    });
+  }
+} catch (err) {
+  console.warn('⚠️ Supabase client initialization notice:', err.message);
+  supabase = null;
+}
 
 // In-Memory fallback store with deep copy of seedData
 const store = {
@@ -32,6 +40,12 @@ class Repository {
   // Quick check if Supabase tables are initialized
   async checkSupabaseTables() {
     if (this.checkedTables) return this.useSupabase;
+    if (!this.supabase) {
+      console.log('ℹ️ Supabase credentials not provided; using built-in high-fidelity store.');
+      this.useSupabase = false;
+      this.checkedTables = true;
+      return false;
+    }
     try {
       const { data, error } = await this.supabase.from('decisions').select('id').limit(1);
       if (error && (error.code === '42P01' || error.message.includes('relation "public.decisions" does not exist'))) {

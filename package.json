@@ -4,13 +4,27 @@
   "description": "Choosy — Full-Stack AI Decision Intelligence + Real-World Data + Personalization Platform",
   "main": "server/src/index.js",
   "scripts": {
+    "start": "node server/src/index.js",
+    "build": "npm --prefix server install",
+    "postinstall": "npm --prefix server install",
     "migrate": "node scripts/migrate.js",
     "dev:server": "cd server && npm run dev",
     "dev:client": "cd client && npm run dev",
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"cyan,magenta\" \"npm run dev:server\" \"npm run dev:client\"",
-    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
-    "build": "cd client && npm run build",
-    "start": "cd server && npm start"
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "keywords": [
     "decision-intelligence",
@@ -22,8 +36,5 @@
     "real-world-data"
   ],
   "author": "Antigravity Team",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "license": "ISC"
 }

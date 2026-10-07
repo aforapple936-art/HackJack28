@@ -73,8 +73,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = config.port;
-app.listen(PORT, async () => {
+const PORT = parseInt(process.env.PORT || config.port || 4000, 10);
+const HOST = '0.0.0.0';
+app.listen(PORT, HOST, async () => {
   console.log(`=======================================================`);
   console.log(`🚀 CHOOSY API SERVER IS RUNNING ON PORT ${PORT}`);
   console.log(`🌐 Health endpoint: http://localhost:${PORT}/api/health`);
