@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Compass, Sparkles, PlusCircle, Sliders, MapPin, Search, ShieldCheck, Bell, History } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function Navbar({ activeTab, setActiveTab, onNewDecision }) {
+export default function Navbar({ activeTab, setActiveTab, onNewDecision, onOpenAlerts }) {
   const [credits, setCredits] = useState(450);
 
   useEffect(() => {
